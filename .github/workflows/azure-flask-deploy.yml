@@ -32,7 +32,7 @@ jobs:
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
       with:
-        app-name: <YOUR_WEBAPP_NAME>
+        app-name: <my-wordcard-app>
         slot-name: 'production'
         package: app.zip
         publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
