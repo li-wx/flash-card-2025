@@ -16,6 +16,11 @@
 <body>
     <div class="card">
         <div class="word" id="word">{{ word.word }}</div>
+        <div style="margin-bottom:12px;">
+            <span><strong>Strength (S):</strong> {{ S }}</span><br>
+            <span><strong>Last Review (T):</strong> {{ T }}</span><br>
+            <span><strong>Memory Score (M):</strong> {{ M }}</span>
+        </div>
         <button onclick="playPronunciation()">🔊 Pronounce</button>
         <div class="definition" id="definition" style="display:none;">{{ word.definition }}</div>
         <button onclick="showDefinition()">Show Definition</button>

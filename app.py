@@ -60,7 +60,13 @@ def index():
         words = progress
     words = calculate_memory(words)
     word = pick_word(words)
-    return render_template('flashcard.html', word=word)
+    # Format T for display
+    T_display = word['T']
+    try:
+        T_display = datetime.fromisoformat(word['T']).strftime('%Y-%m-%d %H:%M:%S')
+    except Exception:
+        pass
+    return render_template('flashcard.html', word=word, S=word['S'], T=T_display, M=round(word['M'], 3))
 
 @app.route('/review', methods=['POST'])
 def review():
