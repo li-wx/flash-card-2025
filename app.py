@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify, session, redirect, u
 import csv
 import os
 import json
+import random
 from datetime import datetime
 
 app = Flask(__name__)
@@ -20,7 +21,7 @@ def load_words():
             words.append({
                 'word': row['word'],
                 'definition': row['definition'],
-                'S': 20,
+                'S': random.uniform(19, 21),
                 'T': '2000-01-01T00:00:00',
             })
     return words
