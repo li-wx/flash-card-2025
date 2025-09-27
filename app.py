@@ -73,7 +73,7 @@ def index():
     else:
         words = progress
     words = calculate_memory(words)
-    estimated_learned = round(estimate_words_learned(words), 2)
+    estimated_learned = estimate_words_learned(words)
     word = pick_word(words)
     # Format T for display
     T_display = word['T']
@@ -84,10 +84,10 @@ def index():
     return render_template(
         'flashcard.html',
         word=word,
-        S=word['S'],
+        S=round(word['S'], 3),
         T=T_display,
         M=round(word['M'], 3),
-        estimated_learned=estimated_learned,
+        estimated_learned=round(estimated_learned, 3),
     )
 
 @app.route('/review', methods=['POST'])
