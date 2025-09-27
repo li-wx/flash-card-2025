@@ -101,13 +101,13 @@ def review():
     for w in progress:
         if w['word'] == word:
             if action == 'A':
-                w['S'] *= 10000
+                w['S'] *= 20000
                 msg = "OK, it won’t show up in the foreseeable future."
             elif action == 'B':
-                w['S'] *= 1.5
+                w['S'] *= 2.0
                 msg = "Good, it will show up less frequently."
             else:
-                w['S'] *= 0.5
+                w['S'] *= 0.3
                 msg = "No problem, it will show up more frequently."
             w['T'] = datetime.now().isoformat()
             break
