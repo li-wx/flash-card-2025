@@ -4,13 +4,14 @@ import os
 import json
 import random
 from datetime import datetime
+import math
 
 app = Flask(__name__)
 app.secret_key = 'replace-this-with-a-secret-key'
 
 DATA_FILE = 'words.csv'
 PROGRESS_FILE = 'progress.json'
-SECONDS_IN_MONTH = 2_592_000
+TARGET_NUMBER_REVIEW = 20 # A word is considered learned if estimated to be recalled 20 times
 
 # Helper to load words from CSV
 
@@ -22,7 +23,7 @@ def load_words():
             words.append({
                 'word': row['word'],
                 'definition': row['definition'],
-                'S': random.uniform(19, 21),
+                'S': random.uniform(4, 5),
                 'T': '2000-01-01T00:00:00',
             })
     return words
@@ -56,9 +57,9 @@ def estimate_words_learned(words):
         try:
             strength = float(w.get('S', 0))
         except (TypeError, ValueError):
-            strength = 0.0
-        total += min(strength, SECONDS_IN_MONTH)
-    return total / SECONDS_IN_MONTH
+            strength = 20.0
+        total += min(math.log(strength, 2), TARGET_NUMBER_REVIEW)
+    return total / TARGET_NUMBER_REVIEW
 
 # Pick word with M closest to 1
 def pick_word(words):
