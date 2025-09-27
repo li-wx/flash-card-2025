@@ -17,6 +17,9 @@
     <div class="card">
         <div class="word" id="word">{{ word.word }}</div>
         <div style="margin-bottom:12px;">
+            <button id="stats-toggle" onclick="toggleStatistics()">Show Statistics</button>
+        </div>
+        <div id="statistics" style="display:none; margin-bottom:12px;">
             <span><strong>Strength (S):</strong> {{ S }}</span><br>
             <span><strong>Last Review (T):</strong> {{ T }}</span><br>
             <span><strong>Memory Score (M):</strong> {{ M }}</span>
@@ -40,6 +43,13 @@
             const utter = new SpeechSynthesisUtterance(word);
             utter.lang = 'en-US';
             window.speechSynthesis.speak(utter);
+        }
+        function toggleStatistics() {
+            const statsDiv = document.getElementById('statistics');
+            const button = document.getElementById('stats-toggle');
+            const showing = statsDiv.style.display === 'block';
+            statsDiv.style.display = showing ? 'none' : 'block';
+            button.innerText = showing ? 'Show Statistics' : 'Hide Statistics';
         }
         function review(action) {
             const word = document.getElementById('word').innerText;
