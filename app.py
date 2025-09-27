@@ -10,6 +10,7 @@ app.secret_key = 'replace-this-with-a-secret-key'
 
 DATA_FILE = 'words.csv'
 PROGRESS_FILE = 'progress.json'
+SECONDS_IN_MONTH = 2_592_000
 
 # Helper to load words from CSV
 
@@ -47,6 +48,18 @@ def calculate_memory(words):
         w['M'] = w['S'] / t if t > 0 else float('inf')
     return words
 
+def estimate_words_learned(words):
+    if not words:
+        return 0.0
+    total = 0.0
+    for w in words:
+        try:
+            strength = float(w.get('S', 0))
+        except (TypeError, ValueError):
+            strength = 0.0
+        total += min(strength, SECONDS_IN_MONTH)
+    return total / SECONDS_IN_MONTH
+
 # Pick word with M closest to 1
 def pick_word(words):
     return min(words, key=lambda w: abs(w['M'] - 1))
@@ -60,6 +73,7 @@ def index():
     else:
         words = progress
     words = calculate_memory(words)
+    estimated_learned = round(estimate_words_learned(words), 2)
     word = pick_word(words)
     # Format T for display
     T_display = word['T']
@@ -67,7 +81,14 @@ def index():
         T_display = datetime.fromisoformat(word['T']).strftime('%Y-%m-%d %H:%M:%S')
     except Exception:
         pass
-    return render_template('flashcard.html', word=word, S=word['S'], T=T_display, M=round(word['M'], 3))
+    return render_template(
+        'flashcard.html',
+        word=word,
+        S=word['S'],
+        T=T_display,
+        M=round(word['M'], 3),
+        estimated_learned=estimated_learned,
+    )
 
 @app.route('/review', methods=['POST'])
 def review():
