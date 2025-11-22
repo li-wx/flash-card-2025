@@ -23,7 +23,7 @@ def load_words():
             words.append({
                 'word': row['word'],
                 'definition': row['definition'],
-                'S': random.uniform(4, 5),
+                'S': random.uniform(4.001, 4.999),
                 'T': '2000-01-01T00:00:00',
             })
     return words
