@@ -21,6 +21,11 @@ A simple Flask web app for spaced repetition flashcards using a CSV word list. T
 - Saves your progress in `progress.json`
 - Pronunciation button for each word
 
+## Progress Storage
+- Local development: progress is saved to `progress.json` in the project folder.
+- Azure App Service: progress is saved to `/home/data/progress.json` so it survives app restarts.
+- Optional override: set `FLASHCARD_PROGRESS_FILE` to a custom file path.
+
 ## File Structure
 - `app.py` — Flask backend
 - `templates/flashcard.html` — Main UI

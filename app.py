@@ -5,13 +5,39 @@ import json
 import random
 from datetime import datetime
 import math
+from pathlib import Path
+import shutil
 
 app = Flask(__name__)
 app.secret_key = 'replace-this-with-a-secret-key'
 
 DATA_FILE = 'words.csv'
-PROGRESS_FILE = 'progress.json'
 TARGET_NUMBER_REVIEW = 20 # A word is considered learned if estimated to be recalled 20 times
+
+
+def get_progress_file_path():
+    configured_path = os.getenv('FLASHCARD_PROGRESS_FILE')
+    if configured_path:
+        return Path(configured_path)
+
+    if os.getenv('WEBSITE_INSTANCE_ID'):
+        return Path('/home/data/progress.json')
+
+    return Path(__file__).resolve().parent / 'progress.json'
+
+
+PROGRESS_FILE = get_progress_file_path()
+LEGACY_PROGRESS_FILE = Path(__file__).resolve().parent / 'progress.json'
+
+
+def ensure_progress_storage_ready():
+    PROGRESS_FILE.parent.mkdir(parents=True, exist_ok=True)
+
+    if PROGRESS_FILE.exists() or PROGRESS_FILE == LEGACY_PROGRESS_FILE:
+        return
+
+    if LEGACY_PROGRESS_FILE.exists():
+        shutil.copy2(LEGACY_PROGRESS_FILE, PROGRESS_FILE)
 
 # Helper to load words from CSV
 
@@ -31,13 +57,15 @@ def load_words():
 # Helper to load/save progress
 
 def load_progress():
-    if os.path.exists(PROGRESS_FILE):
-        with open(PROGRESS_FILE, encoding='utf-8') as f:
+    ensure_progress_storage_ready()
+    if PROGRESS_FILE.exists():
+        with PROGRESS_FILE.open(encoding='utf-8') as f:
             return json.load(f)
     return None
 
 def save_progress(progress):
-    with open(PROGRESS_FILE, 'w', encoding='utf-8') as f:
+    ensure_progress_storage_ready()
+    with PROGRESS_FILE.open('w', encoding='utf-8') as f:
         json.dump(progress, f, ensure_ascii=False, indent=2)
 
 # Calculate M for each word
