@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flashcard Login</title>
+    <style>
+        body { font-family: sans-serif; background: #f5f5f5; }
+        .card { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #ccc; width: 360px; margin: 80px auto; padding: 28px; text-align: center; }
+        h1 { margin: 0 0 8px; font-size: 1.4em; }
+        p { color: #444; margin: 0 0 16px; }
+        input { width: 100%; box-sizing: border-box; padding: 10px; border-radius: 6px; border: 1px solid #ccc; margin-bottom: 12px; }
+        button { width: 100%; padding: 10px 16px; border-radius: 6px; border: none; background: #1976d2; color: #fff; cursor: pointer; }
+        button:hover { background: #1565c0; }
+        .error { color: #b00020; margin-bottom: 12px; font-size: 0.95em; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Welcome to Flashcards</h1>
+        <p>Enter a username to load your own progress.</p>
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+        <form method="post" action="{{ url_for('login') }}">
+            <input type="text" name="username" placeholder="Username" maxlength="64" required>
+            <button type="submit">Continue</button>
+        </form>
+        <p style="margin-top: 12px; font-size: 0.95em;">
+            Administrator? <a href="{{ url_for('admin_login') }}">Manage users</a>
+        </p>
+    </div>
+</body>
+</html>
