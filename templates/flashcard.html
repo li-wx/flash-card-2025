@@ -25,6 +25,14 @@
             </form>
         </div>
         <div class="word" id="word">{{ word.word }}</div>
+        <div style="margin-top:24px;">
+            <button onclick="review('B')">I remember</button>
+            <button onclick="review('C')">I don’t remember</button>
+        </div>
+        <div class="definition" id="definition" style="display:none;">{{ word.definition }}</div>
+        <button onclick="showDefinition()">Show Definition</button>
+        <button onclick="playPronunciation()">🔊 Pronounce</button>
+        <button onclick="review('A')">I know this word well</button>
         <div style="margin-bottom:12px;">
             <button id="stats-toggle" onclick="toggleStatistics()">Show Statistics</button>
         </div>
@@ -33,14 +41,6 @@
             <span><strong>Last Review (T):</strong> {{ T }}</span><br>
             <span><strong>Memory Score (M):</strong> {{ M }}</span><br>
             <span><strong>Estimated number of words learned:</strong> {{ estimated_learned }}</span>
-        </div>
-        <button onclick="playPronunciation()">🔊 Pronounce</button>
-        <div class="definition" id="definition" style="display:none;">{{ word.definition }}</div>
-        <button onclick="showDefinition()">Show Definition</button>
-        <div style="margin-top:24px;">
-            <button onclick="review('A')">A) I don’t need to review</button>
-            <button onclick="review('B')">B) I remember</button>
-            <button onclick="review('C')">C) I don’t remember</button>
         </div>
         <div class="msg" id="msg"></div>
     </div>
