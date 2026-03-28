@@ -39,6 +39,17 @@ def normalize_user_id(raw_value):
     return cleaned.strip('_').lower()[:64]
 
 
+def mask_display_name(display_name):
+    value = (display_name or '').strip()
+    if not value:
+        return '***'
+    if len(value) == 1:
+        return '*'
+    if len(value) == 2:
+        return value[0] + '*'
+    return value[0] + ('*' * (len(value) - 2)) + value[-1]
+
+
 def load_allowed_users():
     USERS_FILE.parent.mkdir(parents=True, exist_ok=True)
     if not USERS_FILE.exists():
@@ -191,7 +202,7 @@ def index():
         T=T_display,
         M=round(word['M'], 3),
         estimated_learned=round(estimated_learned, 3),
-        username=session.get('display_name', user_id),
+        masked_username=mask_display_name(session.get('display_name', user_id)),
     )
 
 

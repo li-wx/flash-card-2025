@@ -19,7 +19,7 @@
 <body>
     <div class="card">
         <div class="user-bar">
-            <span>User: {{ username }}</span>
+            <span>User: {{ masked_username }}</span>
             <form method="post" action="{{ url_for('logout') }}">
                 <button type="submit">Switch User</button>
             </form>
